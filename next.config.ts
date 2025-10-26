@@ -1,16 +1,19 @@
-// next.config.js
-const withPWA = require("next-pwa")({
-  dest: "public",
+import withPWAInit from 'next-pwa';
+
+const withPWA = withPWAInit({
+  dest: 'public',
   register: true,
   skipWaiting: true,
+  disable: process.env.NODE_ENV === 'development', // 開発中は無効
 });
 
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  reactCompiler: true,
-  turbopack: {}, // ✅ Turbopack対応（Next.js 16向け）
-  // 他の設定があればここに追加
+  experimental: {
+    reactCompiler: true,
+  },
+  // キャッシュ更新を強制的に認識
+  output: 'standalone',
 };
 
-module.exports = withPWA(nextConfig);
+export default withPWA(nextConfig);
